@@ -1,0 +1,468 @@
+{
+	"info": {
+		"_postman_id": "4be7df81-557d-4386-97a6-8282dfecda02",
+		"name": "Prueba técnica Nelumbo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7430247"
+	},
+	"item": [
+		{
+			"name": "Autenticación",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@mail.com\",\n    \"password\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Parqueadero",
+			"item": [
+				{
+					"name": "crear parqueadero",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzM2OTQ1MDM0LCJleHAiOjE3MzY5NjY2MzR9.ELTZo_aEa-0BPz0AWn8De9f6RLX_T0xnt759X9aUIMA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Mariana parking\",\n  \"direccion\": \"Av. 10 #04-89\",\n  \"costoTarifaHora\": 1500,\n  \"socioId\": 3,\n  \"capacidad\": 20\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/parqueaderos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parqueaderos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "asignar socio",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzM2OTQ1MDM0LCJleHAiOjE3MzY5NjY2MzR9.ELTZo_aEa-0BPz0AWn8De9f6RLX_T0xnt759X9aUIMA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/parqueaderos/7/asociar-socio/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parqueaderos",
+								"7",
+								"asociar-socio",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar mis parqueaderos (socio)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb2NpbzFAZW1haWwuY29tIiwidXNlcklkIjoyLCJpYXQiOjE3MzY5NDkyOTIsImV4cCI6MTczNjk3MDg5Mn0.YK65I8A-tL8mLreKbcX-oVO-R0m207f_moLAC3PHep4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/parqueaderos/mis-parqueaderos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parqueaderos",
+								"mis-parqueaderos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registrar ingreso",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb2NpbzFAZW1haWwuY29tIiwidXNlcklkIjoyLCJpYXQiOjE3MzY5NDkyOTIsImV4cCI6MTczNjk3MDg5Mn0.YK65I8A-tL8mLreKbcX-oVO-R0m207f_moLAC3PHep4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"placa\": \"XXX000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/parqueaderos/1/registrar-ingreso",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parqueaderos",
+								"1",
+								"registrar-ingreso"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar registros de un parqueadero",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb2NpbzFAZW1haWwuY29tIiwidXNlcklkIjoyLCJpYXQiOjE3MzY5NDkyOTIsImV4cCI6MTczNjk3MDg5Mn0.YK65I8A-tL8mLreKbcX-oVO-R0m207f_moLAC3PHep4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/parqueaderos/1/listar-registros",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parqueaderos",
+								"1",
+								"listar-registros"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registrar salida",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb2NpbzJAbWFpbC5jb20iLCJ1c2VySWQiOjMsImlhdCI6MTczNjgwNTE2NSwiZXhwIjoxNzM2ODI2NzY1fQ.RLCFst2keQkut6A3_E1eU5i3piVxRnnrsrSAY_Dh9Hs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"placa\": \"IFF40E\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/parqueaderos/3/registrar-salida",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parqueaderos",
+								"3",
+								"registrar-salida"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "registrar socio",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzM2OTQ1MDM0LCJleHAiOjE3MzY5NjY2MzR9.ELTZo_aEa-0BPz0AWn8De9f6RLX_T0xnt759X9aUIMA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"socioadmin@email.com\",\n    \"nombre\": \"socio admin\",\n    \"password\": \"socioadmin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/usuarios/socios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios",
+								"socios"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "indicadores",
+			"item": [
+				{
+					"name": "top 10 vehiculos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzM2OTQ5NTAzLCJleHAiOjE3MzY5NzExMDN9.a0VeaaApJRa7YwcwxuppFHD5T7CAZvIzFs-oGN0585Q",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/indicadores/top-vehiculos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"indicadores",
+								"top-vehiculos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "top 10 vehiculos por parqueadero",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb2NpbzFAZW1haWwuY29tIiwidXNlcklkIjoyLCJpYXQiOjE3MzY5NDkyOTIsImV4cCI6MTczNjk3MDg5Mn0.YK65I8A-tL8mLreKbcX-oVO-R0m207f_moLAC3PHep4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/indicadores/top-vehiculos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"indicadores",
+								"top-vehiculos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "primera vez vehiculos parqueadero",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzM2ODgxNjY1LCJleHAiOjE3MzY5MDMyNjV9.k2eeTq8xDpYRMxpdx1Xy3-w7hRDxm6Gv4ohb-sxWIt4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/indicadores/vehiculos-primera-vez/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"indicadores",
+								"vehiculos-primera-vez",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ganancias por periodo (hoy, semana, mes, año) por parqueadero",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb2NpbzJAbWFpbC5jb20iLCJ1c2VySWQiOjMsImlhdCI6MTczNjg4NjU4NywiZXhwIjoxNzM2OTA4MTg3fQ.UoCaGIXnmKO1giSDnaePxmSN1m01Jf_C98-dYnTEf3M",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/indicadores/ganancias/3?periodo=mes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"indicadores",
+								"ganancias",
+								"3"
+							],
+							"query": [
+								{
+									"key": "periodo",
+									"value": "mes"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "top 3 socios con ingresos de vehiculos semana actual",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzM2OTEzOTIzLCJleHAiOjE3MzY5MzU1MjN9.uPXv8ZX_4__faHdojjugDaRezbtPiifnIOxiAAPRwT0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/indicadores/top-socios-ingresos-semana",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"indicadores",
+								"top-socios-ingresos-semana"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "verificar estado",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

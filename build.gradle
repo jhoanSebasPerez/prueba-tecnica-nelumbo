@@ -1,0 +1,19 @@
+plugins {
+    id 'java' // Plugin común para los módulos
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    group = 'com.proyecto_nelumbo'
+    version = '1.0.0'
+
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+}
