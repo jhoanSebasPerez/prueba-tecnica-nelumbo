@@ -11,6 +11,45 @@
 			"item": [
 				{
 					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verificar que la respuesta devuelta sea exitosa (código 200)",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Parsear el cuerpo de la respuesta como JSON",
+									"let response = pm.response.json();",
+									"",
+									"// Verificar si la respuesta contiene el token esperado",
+									"if (response && response.token) {",
+									"    // Almacenar el token en la variable de entorno",
+									"    pm.environment.set(\"auth_token\", response.token);",
+									"    console.log(\"Token almacenado en el entorno:\", response.token);",
+									"} else {",
+									"    pm.test(\"Token not found in response\", function () {",
+									"        pm.expect.fail(\"No se encontró 'token' en la respuesta\");",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -34,7 +73,8 @@
 								"auth",
 								"login"
 							]
-						}
+						},
+						"description": "### Auth Login\n\nThis endpoint is used to authenticate a user by providing their email and password.\n\n#### Request Body\n\n- email (string, required): The email of the user.\n    \n- password (string, required): The password of the user.\n    \n\n#### Response\n\nThe response will be in JSON format and will include the following fields:\n\n- token (string): The authentication token for the user.\n    \n- user_id (string): The unique identifier of the authenticated user.\n    \n\n#### JSON Schema\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"token\": { \"type\": \"string\" },\n        \"user_id\": { \"type\": \"string\" }\n    },\n    \"required\": [\"token\", \"user_id\"]\n}\n\n ```"
 					},
 					"response": []
 				}
@@ -46,17 +86,27 @@
 				{
 					"name": "crear parqueadero",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer-token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzM2OTQ1MDM0LCJleHAiOjE3MzY5NjY2MzR9.ELTZo_aEa-0BPz0AWn8De9f6RLX_T0xnt759X9aUIMA",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzM3MzkyNzg0LCJleHAiOjE3Mzc0MTQzODR9.s3CfD3yLtSOQ5OjSEmqJWSl_3wtTqU-mgWBDaMqselQ",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"nombre\": \"Mariana parking\",\n  \"direccion\": \"Av. 10 #04-89\",\n  \"costoTarifaHora\": 1500,\n  \"socioId\": 3,\n  \"capacidad\": 20\n}",
+							"raw": "{\n  \"nombre\": \"Nuevo parking\",\n  \"direccion\": \"Av. 10 #04-89\",\n  \"costoTarifaHora\": 1500,\n  \"socioId\": 3,\n  \"capacidad\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -168,33 +218,6 @@
 					"response": []
 				},
 				{
-					"name": "listar registros de un parqueadero",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb2NpbzFAZW1haWwuY29tIiwidXNlcklkIjoyLCJpYXQiOjE3MzY5NDkyOTIsImV4cCI6MTczNjk3MDg5Mn0.YK65I8A-tL8mLreKbcX-oVO-R0m207f_moLAC3PHep4",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "http://localhost:8080/parqueaderos/1/listar-registros",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"parqueaderos",
-								"1",
-								"listar-registros"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "registrar salida",
 					"request": {
 						"method": "POST",
@@ -227,6 +250,118 @@
 								"registrar-salida"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar registros de un parqueadero",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb2NpbzFAZW1haWwuY29tIiwidXNlcklkIjoyLCJpYXQiOjE3MzY5NDkyOTIsImV4cCI6MTczNjk3MDg5Mn0.YK65I8A-tL8mLreKbcX-oVO-R0m207f_moLAC3PHep4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/parqueaderos/1/listar-registros",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parqueaderos",
+								"1",
+								"listar-registros"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizar parqueadero",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Caobos Parking\",\n    \"direccion\": \"calle 15a #1e\",\n    \"costoTarifaHora\": 2300,\n    \"capacidad\": -2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/parqueaderos/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parqueaderos",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detalle parqueadero",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "eliminar parqueadero",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/parqueaderos/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parqueaderos",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar todos los parqueaderos",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
@@ -265,6 +400,73 @@
 							"path": [
 								"usuarios",
 								"socios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar socios",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "actualizar usuario",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"jhoan\",\n    \"email\": \"jhoan@correo.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/usuarios/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminar socio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuarios/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuarios",
+								"3"
 							]
 						}
 					},
