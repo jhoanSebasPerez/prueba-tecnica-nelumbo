@@ -17,7 +17,7 @@ public class Registro {
 
     // Relación ManyToOne con Parqueadero (un parqueadero puede tener muchos registros)
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "parqueadero_id", nullable = false)
+    @JoinColumn(name = "parqueadero_id", nullable = true)
     private Parqueadero parqueadero;
 
     // Fecha y hora en la cual se realizó el ingreso

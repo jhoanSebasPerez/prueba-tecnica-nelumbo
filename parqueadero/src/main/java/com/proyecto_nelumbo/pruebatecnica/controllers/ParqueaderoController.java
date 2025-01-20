@@ -3,6 +3,7 @@ package com.proyecto_nelumbo.pruebatecnica.controllers;
 import com.proyecto_nelumbo.pruebatecnica.dtos.request.CreateParqueaderoRequest;
 import com.proyecto_nelumbo.pruebatecnica.dtos.request.RegistrarSalidaRequest;
 import com.proyecto_nelumbo.pruebatecnica.dtos.request.RegistrarVehiculoRequest;
+import com.proyecto_nelumbo.pruebatecnica.dtos.request.UpdateParqueaderoRequest;
 import com.proyecto_nelumbo.pruebatecnica.dtos.response.*;
 import com.proyecto_nelumbo.pruebatecnica.services.ParqueaderoService;
 import com.proyecto_nelumbo.pruebatecnica.services.RegistroService;
@@ -80,4 +81,31 @@ public class ParqueaderoController {
         return ResponseEntity.ok(registros);
     }
 
+    @GetMapping("")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<List<ParqueaderoResponse>> obtenerParqueaderos() {
+        List<ParqueaderoResponse> parqueaderos = parqueaderoService.obtenerParqueaderos();
+        return ResponseEntity.ok(parqueaderos);
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SOCIO')")
+    public ParqueaderoResponse actualizarParqueadero(
+            @PathVariable Long id,
+            @RequestBody @Valid UpdateParqueaderoRequest request) {
+        return parqueaderoService.actualizarParqueadero(id, request);
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SOCIO')")
+    public ParqueaderoDetalleResponse obtenerParqueadero(@PathVariable Long id) {
+        return parqueaderoService.obtenerParqueadero(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> eliminarParqueadero(@PathVariable Long id) {
+        parqueaderoService.eliminarParqueadero(id);
+        return ResponseEntity.noContent().build();
+    }
 }

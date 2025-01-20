@@ -57,4 +57,17 @@ public class Usuario {
     public Set<Parqueadero> getParqueaderos() {
         return parqueaderos;
     }
+
+    //setters
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

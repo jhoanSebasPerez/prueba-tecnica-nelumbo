@@ -1,6 +1,7 @@
 package com.proyecto_nelumbo.pruebatecnica.mappers;
 
 import com.proyecto_nelumbo.pruebatecnica.dtos.request.CreateParqueaderoRequest;
+import com.proyecto_nelumbo.pruebatecnica.dtos.response.ParqueaderoDetalleResponse;
 import com.proyecto_nelumbo.pruebatecnica.dtos.response.ParqueaderoResponse;
 import com.proyecto_nelumbo.pruebatecnica.entities.Parqueadero;
 import com.proyecto_nelumbo.pruebatecnica.entities.Usuario;
@@ -29,6 +30,18 @@ public class ParqueaderoMapper {
                 parqueadero.getCostoTarifaHora(),
                 socioId,
                 parqueadero.getCapacidad()
+        );
+    }
+
+    public static ParqueaderoDetalleResponse toDetalleResponse(Parqueadero parqueadero) {
+        return new ParqueaderoDetalleResponse(
+                parqueadero.getId(),
+                parqueadero.getNombre(),
+                parqueadero.getDireccion(),
+                parqueadero.getCostoTarifaHora(),
+                parqueadero.getCapacidad(),
+                parqueadero.getSocio() != null ? parqueadero.getSocio().getId() : null,
+                parqueadero.getSocio() != null ? parqueadero.getSocio().getNombre() : "Sin asignar"
         );
     }
 }

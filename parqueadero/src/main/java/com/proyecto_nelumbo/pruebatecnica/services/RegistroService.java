@@ -36,23 +36,20 @@ public class RegistroService {
     private final RegistroRepository registroRepository;
     private final ParqueaderoRepository parqueaderoRepository;
     private final HistorialRepository historialRepository;
-    private final SecurityUtil securityUtil;
     private final EmailService emailService;
 
     public RegistroService(RegistroRepository registroRepository,
                            ParqueaderoRepository parqueaderoRepository,
                             HistorialRepository historialRepository,
-                           SecurityUtil securityUtil,
                            EmailService emailService) {
         this.registroRepository = registroRepository;
         this.parqueaderoRepository = parqueaderoRepository;
         this.historialRepository = historialRepository;
-        this.securityUtil = securityUtil;
         this.emailService = emailService;
     }
 
     public RegistroResponse registrarVehiculo(Long parqueaderoId, RegistrarVehiculoRequest request) {
-        Long socioId = securityUtil.obtenerUserIdDesdeContext();
+        Long socioId = SecurityUtil.obtenerUserIdDesdeContext();
 
         Parqueadero parqueadero = parqueaderoRepository
                 .findById(parqueaderoId)
@@ -121,15 +118,26 @@ public class RegistroService {
         historial.setFechaHoraIngreso(fechaHoraIngreso);
         historial.setFechaHoraSalida(fechaHoraSalida);
 
+        // Cálculo del tiempo en horas (mínimo 1 hora)
         Duration duracion = Duration.between(fechaHoraIngreso, fechaHoraSalida);
-        BigDecimal horas = BigDecimal.valueOf(duracion.toMinutes())
-                .divide(BigDecimal.valueOf(60), 2, RoundingMode.HALF_UP);
+        BigDecimal minutos = BigDecimal.valueOf(duracion.toMinutes());
+        BigDecimal horas = minutos.divide(BigDecimal.valueOf(60), 2, RoundingMode.HALF_UP);
+
+        // Establecer un mínimo de 1 hora
+        if (horas.compareTo(BigDecimal.ONE) < 0) {
+            horas = BigDecimal.ONE;
+        }
+
         BigDecimal tarifa = parqueadero.getCostoTarifaHora();
         BigDecimal valorCalculado = tarifa.multiply(horas);
         historial.setValorCalculado(valorCalculado);
 
+        // Guardar en el historial
         Historial guardado = historialRepository.save(historial);
 
+        // Desasociar y eliminar el registro
+        registro.setParqueadero(null);
+        registroRepository.save(registro);
         registroRepository.delete(registro);
 
         return HistorialMapper.toResponse(guardado);
@@ -141,7 +149,7 @@ public class RegistroService {
                 .orElseThrow(() -> new IllegalArgumentException(
                         "No existe un parqueadero con ID " + parqueaderoId));
 
-        Long socioId = securityUtil.obtenerUserIdDesdeContext();
+        Long socioId = SecurityUtil.obtenerUserIdDesdeContext();
         if (parqueadero.getSocio() == null || !parqueadero.getSocio().getId().equals(socioId)) {
             throw new AccessDeniedException("No tienes permiso para ver los registros de este parqueadero.");
         }

@@ -28,6 +28,8 @@ public class Parqueadero {
     @OneToMany(mappedBy = "parqueadero", orphanRemoval = true)
     private List<Registro> registros;
 
+    private boolean habilitado;
+
     public Parqueadero() {
     }
 
@@ -37,6 +39,7 @@ public class Parqueadero {
         this.costoTarifaHora = costoTarifaHora;
         this.socio = socio;
         this.capacidad = capacidad;
+        this.habilitado = true;
     }
 
     // Getters y Setters
@@ -91,5 +94,13 @@ public class Parqueadero {
 
     public void setRegistros(List<Registro> registros) {
         this.registros = registros;
+    }
+
+    public boolean isHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
     }
 }

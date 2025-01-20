@@ -24,14 +24,13 @@ public class DataSeeder {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     @Bean
     public CommandLineRunner seedData(
             UsuarioRepository usuarioRepository,
             ParqueaderoRepository parqueaderoRepository,
             HistorialRepository historialRepository) {
         return args -> {
-            //crear usuario administrador
+            // Crear usuario administrador
             Usuario admin = new Usuario("admin@mail.com", "Admin", passwordEncoder.encode("admin"), "ADMIN");
             usuarioRepository.save(admin);
             logger.info("Usuario administrador insertado.");
@@ -44,14 +43,13 @@ public class DataSeeder {
 
             logger.info("Usuarios (socios) insertados.");
 
-            // Crear parqueaderos para cada socio
-            Parqueadero parqueadero1 = new Parqueadero("Parqueadero Centro", "Calle 123", BigDecimal.valueOf(5.0), socio1, 50);
-            Parqueadero parqueadero2 = new Parqueadero("Parqueadero Norte", "Avenida 45", BigDecimal.valueOf(4.5), socio1, 40);
-            Parqueadero parqueadero3 = new Parqueadero("Parqueadero Sur", "Carrera 67", BigDecimal.valueOf(6.0), socio2, 60);
-            Parqueadero parqueadero4 = new Parqueadero("Parqueadero Oeste", "Diagonal 89", BigDecimal.valueOf(4.0), socio3, 30);
-            Parqueadero parqueadero5 = new Parqueadero("Parqueadero Este", "Calle 10", BigDecimal.valueOf(5.5), socio2, 35);
-            Parqueadero parqueadero6 = new Parqueadero("Parqueadero Centro 2", "Avenida 20", BigDecimal.valueOf(4.8), socio3, 45);
-            parqueaderoRepository.saveAll(List.of(parqueadero1, parqueadero2, parqueadero3, parqueadero4, parqueadero5, parqueadero6));
+            // Guardar parqueaderos uno por uno para asegurarse de que están gestionados por el contexto de persistencia
+            Parqueadero parqueadero1 = parqueaderoRepository.save(new Parqueadero("Parqueadero Centro", "Calle 123", BigDecimal.valueOf(5.0), socio1, 50));
+            Parqueadero parqueadero2 = parqueaderoRepository.save(new Parqueadero("Parqueadero Norte", "Avenida 45", BigDecimal.valueOf(4.5), socio1, 40));
+            Parqueadero parqueadero3 = parqueaderoRepository.save(new Parqueadero("Parqueadero Sur", "Carrera 67", BigDecimal.valueOf(6.0), socio2, 60));
+            Parqueadero parqueadero4 = parqueaderoRepository.save(new Parqueadero("Parqueadero Oeste", "Diagonal 89", BigDecimal.valueOf(4.0), socio3, 30));
+            Parqueadero parqueadero5 = parqueaderoRepository.save(new Parqueadero("Parqueadero Este", "Calle 10", BigDecimal.valueOf(5.5), socio2, 35));
+            Parqueadero parqueadero6 = parqueaderoRepository.save(new Parqueadero("Parqueadero Centro 2", "Avenida 20", BigDecimal.valueOf(4.8), socio3, 45));
 
             logger.info("Parqueaderos insertados.");
 
@@ -70,6 +68,7 @@ public class DataSeeder {
                     new Historial("OPQ123", parqueadero6, LocalDateTime.now().minusDays(1), LocalDateTime.now().minusDays(1).plusHours(2), BigDecimal.valueOf(9)),
                     new Historial("RST456", parqueadero4, LocalDateTime.now().minusDays(3), LocalDateTime.now().minusDays(3).plusHours(4), BigDecimal.valueOf(20))
             );
+
             historialRepository.saveAll(historiales);
             logger.info("Historial de ingresos y salidas insertado.");
 

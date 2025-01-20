@@ -24,14 +24,11 @@ public class IndicadorService {
 
     private final ParqueaderoRepository parqueaderoRepository;
     private final HistorialRepository historialRepository;
-    private final SecurityUtil securityUtil;
 
     public IndicadorService(ParqueaderoRepository parqueaderoRepository,
-                            HistorialRepository historialRepository,
-                            SecurityUtil securityUtil) {
+                            HistorialRepository historialRepository) {
         this.parqueaderoRepository = parqueaderoRepository;
         this.historialRepository = historialRepository;
-        this.securityUtil = securityUtil;
     }
 
     public List<TopVehiculoResponse> obtenerTop10Vehiculos() {
@@ -60,12 +57,10 @@ public class IndicadorService {
     }
 
     private void manejarPermisos(Long parqueaderoId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        boolean isAdmin = SecurityUtil.usuarioEsAdmin();
 
         if (!isAdmin) {
-            Long socioId = securityUtil.obtenerUserIdDesdeContext();
+            Long socioId = SecurityUtil.obtenerUserIdDesdeContext();
             Parqueadero parqueadero = parqueaderoRepository.findById(parqueaderoId)
                     .orElseThrow(() -> new IllegalArgumentException(
                             "No existe parqueadero con ID " + parqueaderoId));
@@ -77,7 +72,7 @@ public class IndicadorService {
     }
 
     public Double obtenerGanancias(Long parqueaderoId, String periodo) {
-        Long socioId = securityUtil.obtenerUserIdDesdeContext();
+        Long socioId = SecurityUtil.obtenerUserIdDesdeContext();
         var parqueadero = parqueaderoRepository.findById(parqueaderoId)
                 .orElseThrow(() -> new IllegalArgumentException("No existe parqueadero con ID " + parqueaderoId));
 

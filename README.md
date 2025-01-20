@@ -45,13 +45,14 @@ Antes de ejecutar el proyecto, asegúrate de tener instaladas las siguientes her
    docker-compose up -d
    ```
 
-4. **Ejecutar la aplicación: inicializa el proyecto y el microservicio de correos (modulos separados)**:
+4. **Ejecutar el servicio de email, necesrio para el envío de correo**:
 
    ```bash
-   ./gradlew :parqueadero:bootRun :email:bootRun
+   ./gradlew :email:bootRun :parqueadero:bootRun
    ```
+4. **Ejecutar el proyecto: dentro del módulo parqueadero, ejecutar la clase "PruebatecnicaApplication"**:
 
-5. **Verificar que la aplicación esté corriendo** en:  
+6**Verificar que la aplicación esté corriendo** en:  
    `http://localhost:8080/status`
 ---
 
